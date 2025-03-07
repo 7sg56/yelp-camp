@@ -67,12 +67,7 @@ app.post('/campgrounds', validateCamp, wrapAsync(async (req, res) => {
 
 app.get('/campgrounds/:id', wrapAsync(async (req, res) => {
     const { id } = req.params;
-    const camp = await Campground.findById(id).populate({
-        path: 'reviews',
-        populate: {
-            path: 'author'
-        }
-    });
+    const camp = await Campground.findById(id).populate('reviews');
     res.render('campgrounds/show', { camp });
 }))
 
