@@ -7,5 +7,7 @@
 0.4alpha - Added Error handlers & Data validation by JOI
 
 0.5.1alpha - Added Review System
+
 0.5.2alpha - Fixed a typo
+
 0.5.3alpha* - Styling review System
