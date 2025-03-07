@@ -4,11 +4,6 @@ const { places, descriptors } = require('./seedHelpers');
 // const cities = require('./cities-american');
 const cities = require('./cities-europe');
 
-const campingRelatedSeeds = [
-  '237', '157', '133', '204', '225', '244', '313', '321', '338', 
-  '347', '368', '370', '442', '450', '483', '493', '590', '644'
-];
-
 async function main() {
   await mongoose.connect('mongodb://127.0.0.1:27017/yelp-camp');
   console.log('Connection open for seeding');

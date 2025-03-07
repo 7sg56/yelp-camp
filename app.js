@@ -4,10 +4,11 @@ const path = require('path');
 const mate = require('ejs-mate');
 const joi = require('joi');
 const wrapAsync = require('./utils/wrapAsync');  
-const {campgroundSchema} = require('./utils/joiSchema');
+const {campgroundSchema, reviewSchema} = require('./utils/joiSchema');
 const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');  
 const Campground = require('./models/campground');
+const Review = require('./models/review');
 
 main().catch(err => console.log(err));
 
@@ -35,6 +36,16 @@ const validateCamp = (req, res, next) => {
     next();
 }
 
+const validateReview = (req, res, next) => {
+
+    const result = reviewSchema.validate(req.body);
+    if(result.error){
+        const msg = result.error.details.map(el => el.message).join(',');
+        throw new ExpressError(msg, 400);
+    }
+    next();
+}
+
 app.get('/', (req, res) => {
     res.render('home');
 }); 
@@ -48,7 +59,7 @@ app.get('/campgrounds/new', (req, res) => {
     res.render('campgrounds/new');    
 })
 
-app.post('/campgrounds', validateCamp, wrapAsync(async (req, res, next) => {
+app.post('/campgrounds', validateCamp, wrapAsync(async (req, res) => {
     const camp = new Campground(req.body.campground);
     await camp.save();
     res.redirect(`/campgrounds/${camp._id}`);
@@ -56,7 +67,12 @@ app.post('/campgrounds', validateCamp, wrapAsync(async (req, res, next) => {
 
 app.get('/campgrounds/:id', wrapAsync(async (req, res) => {
     const { id } = req.params;
-    const camp = await Campground.findById(id);
+    const camp = await Campground.findById(id).populate({
+        path: 'reviews',
+        populate: {
+            path: 'author'
+        }
+    });
     res.render('campgrounds/show', { camp });
 }))
 
@@ -76,6 +92,16 @@ app.delete('/campgrounds/:id', wrapAsync(async (req, res) => {
     const { id } = req.params;
     await Campground.findByIdAndDelete(id);
     res.redirect('/campgrounds');
+}))
+
+app.post('/campgrounds/:id/reviews', validateReview, wrapAsync(async (req, res) => {
+    const { id } = req.params;
+    const camp = await Campground.findById(id);
+    const review = new Review(req.body.review);
+    camp.reviews.push(review);
+    await review.save();
+    await camp.save(); 
+    res.redirect(`/campgrounds/${id}`);
 }))
 
 app.all('*', (req, res, next) => {

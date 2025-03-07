@@ -1,55 +1,58 @@
 <% layout('layouts/boilerplate.ejs') %>
 
 <div class="row">
-    <h1 class="text-center">Edit <%= camp.title %></h1>
-    <div class="col-6 offset-3">
-        <form action="/campgrounds" method="POST" class="needs-validation" novalidate>
-            <div class="mb-2">
-                <label class="form-label" for="title">Title</label>
-                <input class="form-control" type="text" id="title" name="campground[title]" value="<%= camp.title %>" placeholder="Name" required>
-                <div class="valid-feedback">
-                    Looks good!
-                  </div>
+  <h1 class="text-center mb-3">Edit <%= camp.title %></h1>
+  <div class="col-6 offset-3">
+    <div class="card shadow p-3 mb-5 bg-body rounded">
+      <div class="card-body">
+        <form action="/campgrounds/<%=camp._id%>?_method=PUT" method="POST" class="needs-validation" novalidate>
+          <div class="mb-2">
+            <label class="form-label" for="title">Title</label>
+            <input class="form-control" type="text" id="title" name="campground[title]" value="<%= camp.title %>" placeholder="Name" required>
+            <div class="valid-feedback">
+              Looks good!
             </div>
-            <div class="mb-2">
-                <label class="form-label" for="location">Location</label>
-                <input class="form-control" type="text" id="location" name="campground[location]" placeholder="City, State" value="<%= camp.location %>" required>
-                <div class="valid-feedback">
-                    Looks good!
-                  </div>
+          </div>
+          <div class="mb-2">
+            <label class="form-label" for="location">Location</label>
+            <input class="form-control" type="text" id="location" name="campground[location]" placeholder="City, State" value="<%= camp.location %>" required>
+            <div class="valid-feedback">
+              Looks good!
             </div>
-            <div class="mb-2">
-                <label class="form-label" for="image">Image Url</label>
-                <input class="form-control" type="text" id="image" name="campground[image]" placeholder="www.example.com" value="<%= camp.image %>" required>
-                <div class="valid-feedback">
-                    Looks good!
-                  </div>
+          </div>
+          <div class="mb-2">
+            <label class="form-label" for="image">Image Url</label>
+            <input class="form-control" type="text" id="image" name="campground[image]" placeholder="www.example.com" value="<%= camp.image %>" required>
+            <div class="valid-feedback">
+              Looks good!
             </div>
-            <div class="mb-2">
-                <label class="form-label" for="price">Campground Price</label>
-                <div class="input-group">
-                    <span class="input-group-text" id="basic-addon1">$</span>
-                    <input type="text" class="form-control" placeholder="0.00" aria-label="Username" name="campground[price]" value="<%= camp.price %>" required>
-                    <div class="valid-feedback">
-                    Looks good!
-                  </div>
-                </div>
+          </div>
+          <div class="mb-2">
+            <label class="form-label" for="price">Campground Price</label>
+            <div class="input-group">
+              <span class="input-group-text" id="basic-addon1">$</span>
+              <input type="number" step="0.01" class="form-control" placeholder="0.00" aria-label="Username" name="campground[price]" value="<%= camp.price %>" required>
+              <div class="valid-feedback">
+                Looks good!
+              </div>
             </div>
-            <div class="mb-2">
-                <label class="form-label" for="description">Description</label>
-                <textarea class="form-control" type="text" id="description" name="campground[description]" placeholder="Describe your camp" required><%= camp.description %></textarea>
-                <div class="valid-feedback">
-                    Looks good!
-                  </div>
+          </div>
+          <div class="mb-2">
+            <label class="form-label" for="description">Description</label>
+            <textarea class="form-control" type="text" id="description" name="campground[description]" placeholder="Describe your camp" required><%= camp.description %></textarea>
+            <div class="valid-feedback">
+              Looks good!
             </div>
-    
-            <div class="mb-2">
-                <button class="btn btn-info">Update Camp</button>
-            </div>
+          </div>
 
+          <div class="mb-2">
+            <button class="btn btn-info w-100">Update Camp</button>
+          </div>
         </form>
-        <footer>
-            <a href="/campgrounds">Back</a>
-        </footer>
+      </div>
+      <div class="card-footer text-body-secondary">
+        <a href="/campgrounds/<%=camp._id%>">Back</a>
+      </div>
     </div>
+  </div>
 </div>
