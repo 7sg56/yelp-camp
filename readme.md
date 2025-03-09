@@ -10,4 +10,8 @@
 
 0.5.2alpha - Fixed a typo
 
-0.5.3alpha* - Styling review System
+0.5.3alpha - Styling review System
+
+0.5.4alpha - Review System up and running
+
+0.6alpha* - Restructuring & Flash
