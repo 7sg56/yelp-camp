@@ -1,8 +1,8 @@
 <% layout('layouts/boilerplate.ejs') %>
 
 <div class="row">
-  <div class="col-6 offset-3">
-    <div class="card shadow p-3 mb-5 bg-body rounded">
+  <div class="col-6">
+    <div class="card p-3 mb-5 bg-body rounded">
       <img src="<%=camp.image%>" class="card-img-top" alt="...">
       <div class="card-body">
         <h5 class="card-title"><%=camp.title%></h5>
@@ -22,11 +22,12 @@
         <a class="text-body-secondary" href="/campgrounds">All Campgrounds</a>
       </div>
     </div>
-
-    <div class="mt-5">
+  </div>
+  <div class="col-6">
+    <div class="mb-5">
       <form action="/campgrounds/<%= camp._id %>/reviews" class="container needs-validation" method="POST" novalidate>
-        <h2 class="mb-3 text-center">Leave a Review</h2>
-        <div class="card shadow p-3 mb-5 bg-body rounded">
+        <h2 class="mb-3">Leave a Review</h2>
+        <div class="card p-3 mb-5 bg-body rounded">
           <div class="card-body">
             <div class="mb-3">
               <label for="rating" class="form-label">Rating</label>
@@ -59,5 +60,16 @@
       </form>
       
       <!--Display ratings here-->
+      <% for(let review of camp.reviews) { %>
+        <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title">Rating: <%= review.rating %></h5>
+            <p class="card-text">Review: <%= review.body %></p>
+            <form action="/campgrounds/<%=camp._id%>/reviews/<%=review._id%>?_method=DELETE" method="POST">
+              <button class="btn btn-sm btn-danger">Delete</button>
+            </form>
+        </div>
+      </div>
+      <% } %>
   </div>
 </div>

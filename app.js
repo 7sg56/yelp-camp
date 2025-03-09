@@ -28,7 +28,6 @@ app.use(methodOverride('_method'));
 const validateCamp = (req, res, next) => {
     
     const result = campgroundSchema.validate(req.body);
-    console.log(result);
     if(result.error){
         const msg = result.error.details.map(el => el.message).join(',');
         throw new ExpressError(msg, 400);
@@ -99,6 +98,13 @@ app.post('/campgrounds/:id/reviews', validateReview, wrapAsync(async (req, res) 
     res.redirect(`/campgrounds/${id}`);
 }))
 
+app.delete('/campgrounds/:id/reviews/:reviewId', wrapAsync(async (req, res) => {
+    const { reviewId, id } = req.params; 
+    await Campground.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
+    await Review.findByIdAndDelete(reviewId);
+    res.redirect(`/campgrounds/${id}`);
+}))
+
 app.all('*', (req, res, next) => {
     next(new ExpressError('Page not found', 404));    
 })
@@ -109,6 +115,7 @@ app.use((err, req, res, next) => {
     res.status(statusCode).render('error', {err});
 })
 
-app.listen(3000, () => {
-    console.log('Serving on port 3000')
+const PORT = 5000;
+app.listen(PORT, () => {
+    console.log(`Serving on port ${PORT}`);
 });
